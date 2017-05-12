@@ -1,0 +1,13 @@
+CLProver++ v1.0.3
+
+-18/04/15 Added -a command line parameter
+
+-17/04/15 Implemented new heuristc, get next clause
+
+-26/02/15 Fixed a logic error in resolve in clause_index.cpp
+-26/02/15 Fixed an error with mergeCoalitions in clause.cpp
+-26/02/15 Fixed an error where an application of CRES4 was tallied as an application of CRES2
+
+
+
+

@@ -1,0 +1,200 @@
+================================================================================
+	CLProver version 1.0.3
+	
+	Copyright (C) 2014 Paul Gainer, University of Liverpool
+================================================================================
+================================================================================
+	README CONTENTS
+================================================================================	
+	1. Introduction
+	2. Installation
+	3. Usage
+	4. Input Formats
+	5. Examples
+	6. Acknowledgements
+	7. Contact
+	8. Copyright and Licenses
+
+================================================================================
+	1.	 INTRODUCTION
+================================================================================	
+
+CLProver++ is am ordered resolution based theorem prover for Coalition Logic. It
+accepts as input a set of DNCF_CL^MV clauses and outputs their satisfiability.
+
+================================================================================
+	2.	 INSTALLATION
+================================================================================	
+
+Select LINUX or WINDOWS as the TARGET_OS in the Makefile then use 'make' from
+this directory to build the executable. 'make clean' removes installation files
+, installation directories, and the executable.
+
+Prerequisites: any 64-bit version of g++ that supports the c++11 standard.
+	
+================================================================================
+	3.	 USAGE
+================================================================================	
+
+Running CLProver++ with no command line parameters displays usage information.
+Use -i <filename> to set the input file containing the DSNF_CL^MV clauses and
+-o <filename> to use an input file containing an ordering on propositional
+literals (optional). The formats for both of these types of file are described
+in section 4.
+
+Both forward and backward subsumption can be toggled by respectively using -f
+<0|1> and -b <0|1>. In addition there are switches to toggle initial unit
+propagation (-u), initial purity deletion (-p), to display extra inference
+information (-x) and to display coalition vectors instead of modalities (-c).
+
+Defaults are forward subsumption set to enabled and a verbosity of 1.
+
+example:
+
+./CLProver++ -i test.clf -o test.ordering -b 1 -p 1
+
+would use input formulae file 'test.clf', with a literal ordering defined in
+'test_odering', with backward subsumption and initial purity deletion enabled.
+
+The number of agents in \Sigma can be set using -a.
+
+Two heuristics, selectable using -h [choice], are avaiable:
+
+0: Select Smallest Clause chooses the clause to resolve by selecting the
+smallest clause of any type from the unsaturated set.
+
+1: Select Next Clause chooses the clause to resolve as follows:
+
+if UNIVERSAL is non-empty
+   then pick the first clause in UNIVERSAL
+else if COALITION is non-empty
+   then pick the first clause in COALITION
+else if INITIAL_CLAUSES is non-empty
+   then pick the first clause in INTIIAL 
+
+================================================================================
+	4. 	INPUT FORMATS
+================================================================================
+________________________________________________________________________________
+	4.1	COALITION LOGIC FORMULAE FILES
+________________________________________________________________________________
+
+Input files consist of a number of DCNF_CL^MV clauses, separated by ';' and
+terminating with '.'; whitespace is ignored. Clauses are either initial,
+universal or positive or negative coalition clauses.
+
+--------------------------------------------------------------------------------
+	PROPOSITIONAL SYMBOLS
+--------------------------------------------------------------------------------
+Propositional variable consist of alphanumeric characters and underscores, where
+the first character must be a letter.
+
+Propositional symbols are defined as follows:
+
+negation	: '~'
+disjunction	: '|'
+conjunction	: '&'
+implication	: '->'
+
+--------------------------------------------------------------------------------
+	INIITIAL CLAUSES
+--------------------------------------------------------------------------------
+Initial clauses are proceeded by '(i)' and
+consist of a disjunction of propositional literals.
+
+examples:
+(i)p_1|~q_2|r_1;
+(i)r_1|~t_2;
+(i)~f.
+
+--------------------------------------------------------------------------------
+	UNIVERSAL CLAUSES
+--------------------------------------------------------------------------------
+Universal clauses consist of a disjunction of propositional literals.
+
+examples:
+r_15|~t1|p3;
+~A_17|~T_13;
+p2.
+
+--------------------------------------------------------------------------------
+	POSITIVE COALITION CLAUSES
+--------------------------------------------------------------------------------
+Positive coalition clauses consist of a conjunction of literals, an implication,
+a modality [list] where list is a (possibly empty) list of agents (positive
+integers) separated by commas, and finally a disjunction of literals.
+
+examples:
+p_1&~p_2->[1,2]q_1|~r_1;
+S_1->[]R|~T;
+p&q&r->[11,12,13,14]s.
+
+--------------------------------------------------------------------------------
+	NEGATIVE COALITION CLAUSES
+--------------------------------------------------------------------------------
+Negative coalition clauses consist of a conjunction of literals, an implication,
+a modality <list> where list is a (possibly empty) list of agents (positive
+integers) separated by commas, and finally a disjunction of literals.
+
+examples:
+p_1&~p_2-><1,2>q_1|~r_1;
+S_1-><>R|~T;
+p&q&r-><11,12,13,14>]s.
+
+________________________________________________________________________________
+	4.2	Literal Ordering Files
+________________________________________________________________________________
+
+Literal ordering files can be optionally used to define an ordering on the
+literals in a coalition logic formulae file. Any literals appearing in the
+formulae file which do not appear in the ordering file will be assumed to be
+'lesser' literals.
+
+The files consist of a number of propositional variables with the same naming
+convention described in section 4.1, and separated by '>' to define their
+ordering. Input is terminated with EOF. Whitespace is ignored.
+
+example:
+
+p_1 > p_2 > p_3 > p_4 > p_5(EOF)
+
+================================================================================
+	5.	EXAMPLES
+================================================================================
+
+Several examples used during the development of the software are included in the
+examples folder.
+
+================================================================================
+	6.	ACKNOWLEDGEMENTS
+================================================================================
+
+This prover was written as part of a funded EPSRC vacation project. Many thanks
+to Ullrich Hustadt and Clare Dixon for the help and support that I received
+throughout this project.
+
+================================================================================
+	7.	CONTACT
+================================================================================
+
+CLProver++ was written in the Summer of 2014 by Paul Gainer, under the
+supervision of Dr.Ullrich Hustadt and Dr.Clare Dixon at the University of 
+Liverpool Computer Science department.
+
+Paul Gainer			: paul_gainer@live.co.uk
+Dr Ullrich Hustadt	: uhustadt@liverpool.ac.uk
+Dr Clare Dixon		: cldixon@liverpool.ac.uk
+
+================================================================================
+	8.	COPYRIGHT AND LICENSES
+================================================================================
+
+CLProver++ is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License; or (at your option) any later
+version.
+
+CLProver++ is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details. See the
+included file COPYING for a copy of the license.
